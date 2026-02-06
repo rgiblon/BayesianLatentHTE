@@ -174,18 +174,11 @@ stan_data <- list(
 
 #Compile Stan model
 mod <-cmdstan_model("BLCA_fixedtrt_CmdStanR.stan") 
-mod2 <-cmdstan_model("BLCA_fixedtrt_CmdStanR_2.stan") 
 
 #Pilot first for quick fixes
 fit_pilot_cmd <- mod$sample(data=stan_data, chains=3, parallel_chains=3,
                             iter_warmup=3000, iter_sampling=3000,
                             adapt_delta=0.995, max_treedepth=15)
-
-#Pilot first for quick fixes
-fit_pilot_cmd2 <- mod2$sample(data=stan_data, chains=3, parallel_chains=3,
-                            iter_warmup=1000, iter_sampling=1000,
-                            adapt_delta=0.995, max_treedepth=15)
-
 
 #1. Get model stable on one dataset  ← you are here
 #2. Build simulation wrapper
