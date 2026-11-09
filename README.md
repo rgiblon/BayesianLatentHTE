@@ -54,6 +54,8 @@ Each model has its own pipeline: full BLCM (continuous), reduced model, comparat
 4. **Aggregate replicate output:** `aggregate.R`, `aggregate_reduced.R`, `aggregate_comp.R` and `aggregate_binary.R`
 5. **Produce the manuscript tables:** `results_tables.R`
 
+Simulation output is not included in this repository. Because seeds are set deterministically from the condition index and replicate number, running the pipeline reproduces the results reported in the paper. Aggregated results are available from the corresponding author on request.
+
 The SLURM scripts are written for the Nibi cluster (three cores, 3 GB memory, 30-minute limit per replicate). Adjust the account and module settings for other systems.
 
 ## ACTG175 application
