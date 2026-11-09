@@ -11,7 +11,13 @@ This repository contains the Stan programs, the simulation study (continuous and
 ## Repository structure
 
 ```
-stan/      Stan programs (BLCM, reduced fixed-mixing model, one-class models)
+stan/
+  BLCA_fixedtrt_CmdStanR_v2.stan      BLCM, continuous outcome (simulation; s_mid = 0.2)
+  BLCA_fixedtrt_CmdStanR_v3.stan      BLCM, continuous outcome (ACTG175; s_mid = 0.5)
+  BLCA_binary_CmdStanR.stan           BLCM, binary outcome (s_mid = 0.5)
+  BLCA_reduced_CmdStanR_v1.stan       Reduced model with fixed mixing proportions
+  BLCM_k1_homogeneous_shared.stan     One-class model, shared residual SD (ACTG175)
+  BLCM_k1_homogeneous.stan            One-class model, arm-specific residual SDs (ACTG175)
 R/         Data-generating mechanisms, simulation drivers, aggregation, tables, ACTG175 analysis
 slurm/     SLURM array scripts used on the Digital Research Alliance of Canada Nibi cluster
 results/   Simulation condition grids
