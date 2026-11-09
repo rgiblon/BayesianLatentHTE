@@ -1,10 +1,10 @@
 #Install rstan and dependencies (if you haven't already)
 #install.packages("rstan", repos = "https://cloud.r-project.org/", dependencies = TRUE)
 options(mc.cores = parallel::detectCores())  # Allows Stan to use multiple cores
-cmdstanr::set_cmdstan_path("/Users/rachelpim/.cmdstan/cmdstan-2.37.0")
+cmdstanr::set_cmdstan_path("/Users/yournamehere/.cmdstan/cmdstan-2.37.0")
 
 #Set working directory to dissertation
-setwd("~/Desktop/PhD/Dissertation/Paper 2 - LCM/Simulations_Code")
+setwd("~/LCM/Simulations_Code")
 
 # Load the cmdrstanr library & needed packages
 #library(cmdstanr) - not available for R 4.6.0
