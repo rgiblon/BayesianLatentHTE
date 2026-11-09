@@ -1,5 +1,5 @@
 #Set working directory to dissertation
-setwd("~/Desktop/PhD/Dissertation/Paper 2 - LCM/lcm_sim")
+setwd("~/LCM/lcm_sim")
 
 # Load the cmdrstanr library & needed packages
 #library(cmdstanr) - not avail for R 4.6.0
