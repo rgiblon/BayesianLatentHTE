@@ -1,45 +1,63 @@
-# Bayesian Latent Class Model for Treatment Heterogeneity
+# Bayesian Latent Class Model for Heterogeneity of Treatment Effect
 
-This repository contains R code for simulating and implementing a Bayesian latent class model to detect heterogeneity of treatment effect (HTE) in critical care patients. The model uses a mixed-mode latent class approach and leverages Hamiltonian Monte Carlo (HMC) through RStan for robust Bayesian inference.
+Code accompanying:
 
----
+> Giblon R, Liu K, Heath A. *A Bayesian latent class model for heterogeneity of treatment effect: ordered harm, null and benefit subgroups in randomized trials.* [Journal, year, DOI to be added.]
 
-## Table of Contents
-1. [Project Overview](#project-overview)
-2. [Features](#features)
-3. [Installation](#installation)
-4. [Usage](#usage)
-5. [Methodology](#methodology)
-6. [Contributing](#contributing)
-7. [License](#license)
+The Bayesian latent class model (BLCM) estimates class-specific treatment effects in randomized trials jointly with each participant's probability of belonging to a harm, no-effect or benefit class. Prognostic effects are shared across classes, a gap parametrization orders the class-specific effects, and a multinomial membership model gives each participant a class probability from baseline covariates. Because treatment is randomized, the treatment-assignment mechanism is not modelled.
 
----
+This repository contains the Stan programs, the simulation study (continuous and binary outcomes), the comparator analyses (reduced latent class model, BCF, BART) and the ACTG175 application.
 
-## Project Overview
-Understanding treatment heterogeneity is essential for tailoring medical interventions to specific patient subgroups. This Bayesian latent class model:
-- Identifies unobserved subgroups (latent classes) in clinical trial populations.
-- Jointly models treatment allocation and outcomes.
-- Uses Bayesian inference and Hamiltonian Monte Carlo for precise estimation.
+## Repository structure
 
-The approach supports adaptive trial designs and precision medicine by uncovering latent treatment-response patterns.
+```
+stan/      Stan programs (BLCM, reduced fixed-mixing model, one-class models)
+R/         Data-generating mechanisms, simulation drivers, aggregation, tables, ACTG175 analysis
+slurm/     SLURM array scripts used on the Digital Research Alliance of Canada Nibi cluster
+results/   Simulation condition grids
+```
 
----
+## Requirements
 
-## Features
-- Bayesian latent class modeling implemented in R.
-- Efficient sampling via Hamiltonian Monte Carlo (HMC) using **RStan**.
-- Flexible model specification with customizable priors and covariates.
-- Simulation-based validation and performance metrics.
-- Application-ready framework for real-world critical care datasets.
+- R (simulations run with R 4.4.0 on Nibi; aggregation in R 4.6.0)
+- CmdStan 2.38.0 via `cmdstanr`
+- R packages: `cmdstanr`, `posterior`, `bcf`, `dbarts`, `MASS`, `mvtnorm`, `dplyr`, `loo`, `speff2trial`
 
----
+```r
+install.packages(c("posterior", "bcf", "dbarts", "MASS", "mvtnorm", "dplyr", "loo", "speff2trial"))
+install.packages("cmdstanr", repos = c("https://stan-dev.r-universe.dev", getOption("repos")))
+cmdstanr::install_cmdstan()
+```
 
-## Installation
-To set up the project locally, follow these steps:
+## Reproducing the simulation study
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/username/bayesian-latent-class-model.git
-   cd bayesian-latent-class-model
+Each model has its own pipeline: full BLCM (continuous), reduced model, comparators (BCF and BART) and BLCM (binary).
 
-install.packages(c("rstan", "ggplot2", "dplyr"))
+1. **Compile the Stan models:** `R/compile.R`
+2. **Generate the condition grids:** `R/make_conditions.R` (continuous) and `R/make_conditions_binary.R` (binary). These write `conditions.csv` and `conditions_binary.csv`, included in `results/`. There are 10 conditions with 1,000 replicates each.
+3. **Run the replicates.** Each replicate is an independent SLURM array job:
+
+   | Model | Driver | Functions | SLURM script |
+   |---|---|---|---|
+   | BLCM (continuous) | `run_sim.R` | `functions.R` | `submit.sh` |
+   | Reduced model | `run_sim_reduced.R` | `functions_reduced.R` | `submit_reduced.sh` |
+   | BCF and BART | `run_sim_comp.R` | `functions.R` | `submit_comp.sh` |
+   | BLCM (binary) | `run_sim_binary.R` | `functions_binary.R` | `submit_binary.sh` |
+
+   Random seeds are set deterministically from the condition index and replicate number.
+4. **Aggregate replicate output:** `aggregate.R`, `aggregate_reduced.R`, `aggregate_comp.R` and `aggregate_binary.R`
+5. **Produce the manuscript tables:** `results_tables.R`
+
+The SLURM scripts are written for the Nibi cluster (three cores, 3 GB memory, 30-minute limit per replicate). Adjust the account and module settings for other systems.
+
+## ACTG175 application
+
+`R/blcm_actg175.R` fits the BLCM, the one-class comparison models, BCF and BART to the ACTG175 trial. The data are publicly available in the `speff2trial` R package.
+
+## Licence
+
+MIT. See `LICENSE`.
+
+## Contact
+
+Rachel Giblon, Dalla Lana School of Public Health, University of Toronto
