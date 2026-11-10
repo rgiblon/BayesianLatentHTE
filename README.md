@@ -18,7 +18,7 @@ stan/
   BLCA_reduced_CmdStanR_v1.stan       Reduced model with fixed mixing proportions
   BLCM_k1_homogeneous_shared.stan     One-class model, shared residual SD (ACTG175)
   BLCM_k1_homogeneous.stan            One-class model, arm-specific residual SDs (ACTG175)
-R/         Data-generating mechanisms, simulation drivers, aggregation, tables, ACTG175 analysis
+R/         Data-generating mechanisms, simulation drivers, aggregation, tables, ACTG175 analysis, tau tilde
 slurm/     SLURM array scripts used on the Digital Research Alliance of Canada Nibi cluster
 results/   Simulation condition grids
 ```
