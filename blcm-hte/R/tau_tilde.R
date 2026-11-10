@@ -112,7 +112,7 @@ cat(sprintf("\nMax |sum P(C=c) tau_tilde_c - sum P(C=c) tau_c| over conditions: 
 write.csv(tau_tilde_tab, "tau_tilde_targets.csv", row.names = FALSE)
 
 # ---------- Optional: BCF/BART performance against both targets ----------
-res_file <- "~/Desktop/PhD/Dissertation/Paper 2 - BLCM/lcm_sim/results_combined_comp.rds"
+res_file <- "results_combined_comp.rds" # stored results from HPC 
 if (file.exists(res_file)) {
   rc  <- readRDS(res_file)
   key <- function(tau) paste(round(tau, 6), collapse = "_")
